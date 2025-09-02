@@ -1,0 +1,587 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title>A Rigorous Proof of the Symmetry-Based Molecular Orbital Method
+#SoME4 Submission</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='main.css' rel='stylesheet' type='text/css' /> 
+<meta content='main.tex' name='src' /> 
+</head><body>
+   <div class='maketitle'>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class='titleHead'>A Rigorous Proof of the Symmetry-Based
+Molecular Orbital Method<br />
+#SoME4 Submission</h2>
+<div class='author'></div><br />
+<div class='date'><span class='cmr-12'>August 2025</span></div>
+   </div>
+   <h3 class='sectionHead' id='preface'><span class='titlemark'>1   </span> <a id='x1-10001'></a>Preface</h3>
+<!-- l. 19 --><p class='noindent'>Symmetry methods are taught universally in undergraduate inorganic classrooms,
+and have been for many years. Surprisingly, however, there are few resources
+available which cover the subject in deeper depth from a mathematical perspective,
+and of those, none are both accessible to undergraduates and detailed enough to
+provide a complete understanding. Some advanced texts exist from a mathematical
+or physics perspective, but the vast majority are heavily tailored towards advanced
+application (in the case of phyics) or highly abstract generalization (in the case of
+math), rendering them pretty much useless to nonexperts in those fields. A small
+number of advanced chemistry texts cover the subject - namely, Robert Carter’s
+<span class='cmti-10'>Molecular Symmetry and Group Theory </span>and F. Albert Cotton’s <span class='cmti-10'>Chemical
+Applications of Group Theory </span>each go into some detail - but both either fall short of
+a full-depth explanation (in the case of carter) or provide a significant amount of
+rigor, but don’t elaborate enough about the representation theory before
+jumping right into character theory, which in Cotton’s book left me particularly
+unsatisfied. Additionally, neither do a very thorough job of motivating the method
+physically, arguably the most important part of a grounded and satisfying
+explanation.
+</p><!-- l. 21 --><p class='indent'>   I personally think a thorough explanation and <span class='cmti-10'>demonstration </span>of the representation
+theory of molecules is a very useful exercise, even if actually applying the method
+without character theory becomes rather impractical to do by hand. Not only does it
+provide a strong foundation from which character theory builds upon, but it directly
+leads to some very interesting intuitive insights. So, my goal with this writeup is
+threefold: 1) lay out thoroughly and rigorously the representation theory of symmetry
+groups of molecules; 2) deeply motivate why understanding group and representation
+theory helps us approximate molecular orbitals efficiently; and 3) apply
+                                                                  
+
+                                                                  
+the method to several molecules, with detailed explanations and example
+matrices. These are the three aspects I was looking for when I first set out to
+understand this content, and I hope this could be the resource I was looking
+for.
+</p><!-- l. 23 --><p class='indent'>   However, this is probably not the resource that most chemistry students are
+looking for. While many mathematical insights can come from a rigorous approach
+with abstract tools, there’s a significant amount of visual intuition that also helps a
+great deal, and that’s something I can’t provide in text. However, I am also working
+on a youtube video made with Manim aimed at an audience with a less
+thorough mathematical background. I had originally intended that to be my
+SoME4 submission, but I was hit with the paradox of teaching: It’s harder and
+takes longer to write a shorter, simpler explanation than a longer, more
+rigorous one (”If I had had more time, I would have written a shorter letter”
+-CGP Grey). My goal is for that video to be as rigorous and satisfying as
+this writeup, albeit with some of the more involved (and less interesting)
+proofs to this document, and it will focus much more on the visual and
+chemical intuition. That’s not to say that I won’t try to make this document
+intuitive - it’s just that I can’t guarantee groundbreaking revelations to
+anyone who doesn’t already have a very strong intuition via text alone about
+linear algebra and groups. (If you want to take a stab at it anyway, then hell
+yeah! I do really recommend 3blue1brown’s essence of linear algebra series (
+<a class='url' href='https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE\_ab'><span class='cmtt-10'>https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE\_ab</span></a>)
+as an introduction to the visual intuition of linear algebra, which has been
+indispensable for me in my research and in writing this video).
+</p><!-- l. 25 --><p class='indent'>   Okay, last thing before I shut up and start talking: I won’t be covering
+character theory in detail here. As I mentioned before, using character tables to
+find multiplicity of irreducible representations is a very useful trick, and
+when combined with projection to extract basis vectors, it can fully skip the
+need to do decomposition manually; however, all explanations of it (as they
+exist online, which is nearly as rare) are necessarily rooted in the theory
+presented here, so to understand them, it’s critical to understand representation
+theory and invariant subspaces. If all goes to plan, I do intend to make a
+follow up video + article about character theory and the projection operator
+method. For now, I explain at the very end exactly what character theory <span class='cmti-10'>does</span>
+in the context of representation theory, and briefly outline the projection
+operator method (just to get it written down) and its role in completing the
+shortcut.
+</p><!-- l. 28 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='introduction-symmetry-group-theory-and-molecules'><span class='titlemark'>2   </span> <a id='x1-20002'></a>Introduction: Symmetry, Group Theory, and Molecules</h3>
+<!-- l. 29 --><p class='noindent'>The fundamental problem we will be tackling today is very simple to describe: You
+have a molecule. You know its atoms and structure, but you want to know its bonds.
+More specifically, you want to know the energy and shape of the various orbitals its
+                                                                  
+
+                                                                  
+electrons can occupy. In other words, you want it’s <span class='cmbx-10'>molecular orbitals</span>: the
+wavefunction describing the position of an electron associated with each electronic
+state.
+</p><!-- l. 31 --><p class='indent'>   You already know how to do this for atoms - either because they had you
+derive it in a physics or physical chemistry class, or simply because you’ve
+seen them every time you enter a chemistry class: s orbitals, p orbitals, d
+orbitals, etc, each parameterized by shell and angular momentum. Although
+atomic number affects the magnitude of the nucleus’ pull on its resident
+electrons, the shapes are all in the family of hydrogen-like orbitals: the first
+electronic wavefunctions to be solved analytically in closed form in the
+1920s<span class='footnote-mark'><a href='main2.html#fn1x0'><sup class='textsuperscript'>1</sup></a></span><a id='x1-2001f1'></a> .
+</p><!-- l. 33 --><p class='indent'>   In fact, they were the only wavefunctions to be solved in closed form. They still
+are. It turns out having multiple nuclei tugging on electron clouds is too much for the
+tools of modern differential calculus to handle; in fact, the hydrogen orbitals can’t
+even be symbolically solved when there is more than one electron around the
+molecule for the same reason.
+</p><!-- l. 35 --><p class='indent'>   This leaves us in a bit of a predicament with our molecular orbital task. If we
+can’t solve the equations that are supposed to produce them, how can we ever be
+expected to find them?
+</p><!-- l. 37 --><p class='indent'>   The answer is twofold. We will, at the end of the day, be using an approximation
+which lets us turn the problem into something more tractable. More interestingly,
+however, we will be searching for the orbitals by determining properties we know
+they must have, and then guiding our search accordingly. And for that, we will be
+using <span class='cmbx-10'>molecular symmetry</span>.
+</p>
+   <h3 class='sectionHead' id='molecular-symmetry'><span class='titlemark'>3   </span> <a id='x1-30003'></a>Molecular Symmetry</h3>
+<!-- l. 41 --><p class='noindent'>For the sake of time, I will be assuming you know the basics of molecular geometry
+and molecular symmetry. There are many clear and concise resources on Google and
+YouTube that walk one through the various symmetry operations and assigning
+point-groups to molecules. I will, however, talk briefly about <span class='cmti-10'>why </span>we care about
+symmetry.
+</p><!-- l. 43 --><p class='indent'>   Each molecule has a particular arrangement of atoms which defines its geometry. Since
+we are only going to be solving for single-electron orbitals (because Fock knows that’s hard
+enough<span class='footnote-mark'><a href='main3.html#fn2x0'><sup class='textsuperscript'>2</sup></a></span><a id='x1-3001f2'></a> 
+on its own), we can assume that the electric force/potential field which will determine
+the shapes of our orbitals is influenced solely by the positions (and nuclear charge) of
+                                                                  
+
+                                                                  
+each atomic nucleus. Thus, for any given molecule, there will very often be some
+number of rearrangements of the atoms which will leave the electric potential - and
+thus the molecular orbitals - entirely unchanged. These rearrangements are known
+as the <span class='cmbx-10'>symmetries </span>of our molecule, and, taken as a whole, the set of a
+molecule’s symmetries form a <span class='cmbx-10'>mathematical group </span>(whose group action is the
+act of composing symmetry actions, e.g. performing one action, then the
+other).
+</p><!-- l. 45 --><p class='indent'>   While it might not seem like a big deal, these actions rigorously encode a set of
+equalities we can use to characterize the potential field and thus the orbitals
+generated by it. Since we generally only consider the symmetry actions which can be
+described as transformations of space - reflections, rotations, and inversions - we can
+consider the effect of a symmetry action on any object in the molecule’s 3d
+space. Notably, if we consider the <span class='cmbx-10'>chemical environment </span>of a particular
+wavefunction - that is, the potential around it and the forces thus imparted that
+would change the shape of the wavefunction over time - we know it must be
+the <span class='cmbx-10'>same </span>as the chemical environment of any wavefunction symmetrical
+to the first, such that applying a symmetry to the first can produce the
+second.
+</p><!-- l. 47 --><p class='indent'>   This means that if two wavefunctions are symmetrical to each other, they must
+exist in the same chemical environment as each other, and therefore, they
+will both <span class='cmti-10'>evolve </span>symmetrically to each other over time. Since the <span class='cmbx-10'>stable
+molecular orbitals </span>of a molecule are those which <span class='cmbx-10'>don’t change over
+time</span><span class='footnote-mark'><a href='main4.html#fn3x0'><sup class='textsuperscript'>3</sup></a></span><a id='x1-3003f3'></a> ,
+that means if two wavefunctions are symmetrical to each other, and one of them is a
+molecular orbital, the other is a molecular orbital as well. And remember,
+”symmetrical to each other” means there exists a symmetry action which brings one
+to the other - so if you have a molecular orbital (MO), then all of the wavefunctions
+you can get by applying the symmetries of the molecule to that MO will also be
+MOs. Additionally, since the energy of an orbital is a property of its shape in the
+potential well, all of those equivalent MOs will have the same definite energy as the
+first.
+</p><!-- l. 49 --><p class='indent'>   What this tells us is that space of all possible wavefunctions can be grouped into
+symmetric sets, and that our molecular orbitals will always be grouped with other
+identical MOs. What the remainder of this writeup will document is how we
+can classify these symmetric sets - and the linear spaces they form - both
+by their size and by the action of the group upon them. I will then show
+that by grouping together these symmetric spaces by their classification,
+and by finding a basis for these groupings using the atomic orbitals of our
+atoms, we can greatly simplify the process of determining our molecular
+orbitals.
+                                                                  
+
+                                                                  
+</p>
+   <h3 class='sectionHead' id='orbits-and-invariant-subspaces'><span class='titlemark'>4   </span> <a id='x1-40004'></a>Orbits and Invariant Subspaces</h3>
+<!-- l. 54 --><p class='noindent'>In the field of group theory, these ”symmetric sets” are known as <span class='cmbx-10'>orbits</span>. Specifically,
+if a group <span class='cmmi-10'>G </span>describes a set of <span class='cmti-10'>actions </span>on a set, in this case the set of wavefunctions,
+then the orbit under <span class='cmmi-10'>G </span>(written orbit<sub><span class='cmmi-7'>G</span></sub>) some element Ψ of that set is defined as
+<span class='cmsy-10'>{</span><span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>Ψ<span class='cmsy-10'>|</span><span class='cmmi-10'>g </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>G</span><span class='cmsy-10'>} </span>- that is, the result of applying <span class='cmmi-10'>g </span>to Ψ for each action <span class='cmmi-10'>g </span>in
+<span class='cmmi-10'>G</span>.
+</p><!-- l. 56 --><p class='indent'>   It’s important to note that, although every element will have its own
+orbit, not all orbits are equivalent. For example, some orbits will be different
+sizes; some objects might be totally symmetric with respect to the group,
+so that every symmetry action maps that element to itself. In that case,
+the orbit would only be a single element! On the flipside, some elements
+might be totally asymmetric, so that every symmetry action will result in a
+different element. Other orbits might be the same size as each other but be the
+result of the group acting differently on the seed element - for example, one
+seed element might be totally symmetric under reflection, but not rotation,
+while the other seed element is totally symmetric under rotation, but not
+reflection. This inherent structure to how the group acts on an orbit is what
+we’re interested in describing, for reasons that will be made clear in the next
+section.
+</p><!-- l. 58 --><p class='indent'>   However, describing the action of the group on each orbital is a very
+complicated task, and for a general group, doesn’t actually help us that
+much. But this is no general group! Remember, we defined our symmetry
+group to be composed solely of <span class='cmbx-10'>transformations of space</span>. This means
+that the action of our group on the space of <span class='cmti-10'>wavefunctions </span>can be described
+linearly.<span class='footnote-mark'><a href='main5.html#fn4x0'><sup class='textsuperscript'>4</sup></a></span><a id='x1-4001f4'></a> 
+</p><!-- l. 62 --><p class='indent'>   This opens up the door to many possibilities. First, it means that we can describe
+the group action with matrices, which computationally opens the door to a huge
+number of possibilities that linear algebra provides. Secondly, it allows us to relate
+the various orbits-of-wavefunctions to each other by way of these matrices.
+                                                                  
+
+                                                                  
+We will address both of these using <span class='cmbx-10'>invariant subspaces</span>. I’m assuming
+you have a decent background in linear algebra, but as a brief reminder, a
+subspace of some larger vector space <span class='cmmi-10'>V </span>is a subset of <span class='cmmi-10'>V </span>in which addition and
+scalar multiplication are closed. You can think of it as some n-dimensional
+”slice” of <span class='cmmi-10'>V </span>- for example, an (infinite) line, an (infinite) plane, and the point
+at the origin are all subspaces of <span class='cmmi-10'>V </span>- 1, 2, and 0 dimensional subspaces,
+respectively. For a subspace to be <span class='cmbx-10'>invariant </span>under a linear action - or in our
+case, a set of them - means that every vector in that space gets mapped to
+another vector in that space under the action (or under all actions in the
+set). In other words, each action reorganizes the vectors in the subspace -
+rotating, reflecting, or otherwise transforming them - but does not move any
+vectors out of (nor, because group actions are always invertible, into) the
+space.
+</p><!-- l. 64 --><p class='indent'>   Invariant subspaces are very useful when trying to understand a (set of) linear
+action(s), because any linear action can be represented on a (finite) invariant
+subspace as matrix. Specifically, given a basis <span class='cmmi-10'>b</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>,b</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>,...</span> of vectors in that subspace,
+each element of the matrix representation of a linear action <span class='cmmi-10'>g </span>can be defined as
+<span class='cmmi-10'>a</span><sub><span class='cmmi-7'>i</span></sub><span class='cmmi-10'>j </span>= <span class='cmmi-10'>b</span><sub><span class='cmmi-7'>i</span></sub> <span class='cmsy-10'>⋅ </span><span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>b</span><sub><span class='cmmi-7'>j</span></sub>. It’s important that the subspace be invariant so that <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>b</span><sub><span class='cmmi-7'>j</span></sub>
+can always be expressed as a linear combination of your basis! For a given
+invariant subspace (and basis), the set of matrices corresponding to each linear
+action of the group is known as a <span class='cmbx-10'>representation </span>of the group on that
+space<span class='footnote-mark'><a href='main6.html#fn5x0'><sup class='textsuperscript'>5</sup></a></span><a id='x1-4003f5'></a> .
+Although the actual entries in each matrix are dependent on the particular basis, we
+often like to talk generally about the group’s action on the space as a whole
+independent of the basis. To that end, we usually call two representations of a group
+the same if one can be transformed into the other by a <span class='cmbx-10'>change-of-basis </span>-
+algebraically, if for each matrix <span class='cmmi-10'>A</span><sub><span class='cmmi-7'>i</span></sub> from the first representation, the corresponding
+matrix in the second can be described as <span class='cmmi-10'>MA</span><sub><span class='cmmi-7'>i</span></sub><span class='cmmi-10'>M</span><sup><span class='cmsy-7'>−</span><span class='cmr-7'>1</span></sup>, using the same change-of-basis
+matrix <span class='cmmi-10'>M </span>for each element in the representation. Thus, up to this notion of
+equivalence, every invariant subspace can be classified by the representation of the
+group on that subspace, which describes how that subspace is linearly transformed by
+the different actions of the group.
+</p><!-- l. 66 --><p class='indent'>   Critically, <span class='cmbx-10'>the span of the orbit of a vector is always an invariant
+subspace</span>. Recall that the span of a set of vectors is the set of all possible linear
+combinations of those vectors, and is always a valid subspace. Lets say the orbit of a
+vector <span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub> is <span class='cmsy-10'>{</span><span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>,v</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>,...</span><span class='cmsy-10'>}</span>, and will call the subspace <span class='cmmi-10'>V </span>= span<span class='cmsy-10'>{</span><span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>,v</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>,...</span><span class='cmsy-10'>}</span>.
+Then each element in the subspace can be described as <span class='cmmi-10'>v </span>= <span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub> + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>2</span></sub> + <span class='cmmi-10'>...</span>.
+The subspace <span class='cmmi-10'>V </span>is invariant under <span class='cmmi-10'>G </span>iff, for every vector <span class='cmmi-10'>v </span>in <span class='cmmi-10'>V </span>, <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>v </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>V</span>
+for every <span class='cmmi-10'>g </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>G</span>. <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>v </span>= <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>(<span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub> + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>2</span></sub> + <span class='cmmi-10'>...</span>) = <span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>g</span>(<span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub>) + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>g</span>(<span class='cmmi-10'>v</span><sub><span class='cmr-7'>2</span></sub>) + <span class='cmmi-10'>... </span>by
+linearity of <span class='cmmi-10'>g</span>. Note that the orbit itself must be invariant under <span class='cmmi-10'>G</span>, as if some
+element <span class='cmmi-10'>v</span><sub><span class='cmmi-7'>i</span></sub> <span class='cmsy-10'>∈</span> orbit<sub><span class='cmmi-7'>G</span></sub>(<span class='cmmi-10'>v</span>) = <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>v</span>, then <span class='cmmi-10'>h </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>v</span><sub><span class='cmmi-7'>i</span></sub> = <span class='cmmi-10'>h </span><span class='cmsy-10'>∗ </span>(<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>v</span>) = (<span class='cmmi-10'>h </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>g</span>) <span class='cmsy-10'>∗ </span><span class='cmmi-10'>v</span>; since
+<span class='cmmi-10'>h </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>g </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>G</span>, (<span class='cmmi-10'>h </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>g</span>) <span class='cmsy-10'>∗ </span><span class='cmmi-10'>v </span><span class='cmsy-10'>∈</span> orbit<sub><span class='cmmi-7'>G</span></sub>(<span class='cmmi-10'>v</span>). Thus, <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>v</span><sub><span class='cmmi-7'>i</span></sub> <span class='cmsy-10'>∈ </span><span class='cmmi-10'>V </span>, meaning <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>v </span>is some
+                                                                  
+
+                                                                  
+linear combination of vectors in <span class='cmmi-10'>V </span>- which by the definition of a subspace,
+means <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>v </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>V </span>. Thus, the span of an orbit of a vector forms an invariant
+subspace.
+</p><!-- l. 69 --><p class='indent'>   With these two tools, we can return to our original goal of classifying the
+symmetric sets of our wavefunctions, by extending that to classifying the symmetric
+<span class='cmti-10'>spaces </span>of wavefunctions and using those classifications to compute the value of our
+molecular orbitals.
+</p>
+   <h3 class='sectionHead' id='invariant-subspaces-of-mos'><span class='titlemark'>5   </span> <a id='x1-50005'></a>Invariant Subspaces of MOs</h3>
+<!-- l. 72 --><p class='noindent'>Earlier I mentioned that we know that molecular orbitals come in symmetric sets
+because the chemical potential of the molecule is symmetrical. While this is true, it
+pays to be a little rigorous, so let’s look a little deeper at the physics. At the core of
+wavefunction evolution is a linear operator known as the <span class='cmbx-10'>Hamiltonian</span>, <span class='cmsy-10'>ℋ</span>. When I
+say at the core, I’m being quite literal: it is the fundamental component of the
+Schrödinger equation, which describes how any wavefunction Ψ evolves over time.
+</p><figure class='figure' id='x1-5002r1'><span id='the-schrodinger-equation'></span> 
+
+                                                                  
+
+                                                                  
+
+                                                                  
+
+                                                                  
+<table class='equation'><tr><td>
+<div class='math-display'>
+<img alt='∂Ψ-= − iℋ Ψ
+∂t     ℏ
+' class='math-display' src='main0x.png' /><a id='x1-5001r1'></a></div>
+</td><td class='equation-label'>(1)</td></tr></table>
+<!-- l. 77 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>The Schrödinger Equation</span></figcaption><!-- tex4ht:label?: x1-5002r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 82 --><p class='indent'>   When we talk about atomic or molecular orbitals (of an atom or molecule
+respectively), what we mean are the solutions to this equation which describe the
+quantum state of an electron. Specifically, we want the <span class='cmbx-10'>time-independent </span>solutions
+to this equation, meaning that Ψ doesn’t <span class='cmbx-10'>observably </span>change over time.
+”Observably” is a loaded word there which has implications beyond the scope of this
+document, but essentially the requirement is that the probability density function
+describing an electron’s state doesn’t change. The probability density is the
+magnitude of the wavefunction squared; since a wavefunction is complex, this means
+that the wavefunction is allowed to change in <span class='cmbx-10'>phase </span>over time, but not
+in magnitude. Specifically (and this is where the nuances of observability
+come in), to be time-independent, the wavefunction is allowed to globally
+change phase over time - that is, its value at every point must change phase
+at the same rate - but there must be no changes in magnitude or global
+phase.
+</p><!-- l. 84 --><p class='indent'>   That’s a very complicated requirement, but luckily it has a simple(r) solution: <img align='middle' alt='∂Ψ-
+∂t' class='frac' src='main1x.png' />
+must be a 90<span class='tcrm-1000'>°</span>or -90<span class='tcrm-1000'>°</span>phase-offset scalar multiple of Ψ. To realize why, imagine Ψ
+evaluated a single point <span class='cmmi-10'>x</span>, somewhere in the complex plane. If we want to add some
+value which will infinitesimally rotate Ψ(<span class='cmmi-10'>x</span>) around the origin, the complex number
+we add must be perpendicular to Ψ such as to not change its distance to the origin.
+So long as our <span class='cmmi-10'>d</span>Ψ always remains perpendicular as Ψ changes, it will travel in a
+smooth circle. Since the effect of this rotation depends on the radius to the
+origin, it’s important that the magnitude of our added vector scales with
+the magnitude of Ψ at every point, so that all of Ψ is rotated at the same
+rate.
+</p><!-- l. 86 --><p class='indent'>   Hopefully that description was illustrative, but if not, fear not: we are at its end.
+We know that <img align='middle' alt='∂Ψ-
+∂t' class='frac' src='main2x.png' /> must equal Ψ, rotated 90<span class='tcrm-1000'>°</span>and potentially multiplied by some real
+number; since <span class='msbm-10'>ℏ </span>is just a real physical constant, and multiplying by <span class='cmmi-10'>i </span>rotates complex
+numbers by 90<span class='tcrm-1000'>°</span>in phase, we know that <span class='cmsy-10'>ℋ</span>Ψ = <span class='cmmi-10'>λ</span>Ψ for some real number <span class='cmmi-10'>λ</span>. This
+equation is often known as the <span class='cmbx-10'>time-independent Schrödinger equation</span>, as it
+can be used to calculate all of the time-dependent solutions to the Schrödinger
+equation.
+</p><!-- l. 88 --><p class='indent'>   Those familiar with linear algebra will recognize this as an <span class='cmbx-10'>eigenvector </span>equation.
+An eigenvector of a linear operator <span class='cmmi-10'>A </span>is any vector <span class='cmmi-10'>x </span>such that <span class='cmmi-10'>Ax </span>= <span class='cmmi-10'>λx </span>for
+some scalar <span class='cmmi-10'>λ</span>; the value of <span class='cmmi-10'>λ </span>corresponding to a certain eigenvector <span class='cmmi-10'>x </span>is
+known as the corresponding <span class='cmbx-10'>engenvalue</span>. It turns out the eigenvalues of the
+Schrödinger equation - the eigenvalues of the Hamiltonian operator - are also
+very important; they represent the corresponding <span class='cmbx-10'>energy </span>of an orbital.
+That’s why in most physics texts, you’ll see the above equation written
+<span class='cmsy-10'>ℋ</span>Ψ = <span class='cmmi-10'>E</span>Ψ.
+</p><!-- l. 90 --><p class='indent'>   Thus, by finding solutions to the time-independent Schrödinger equation, we
+compute both the orbital <span class='cmti-10'>and </span>its energy. How cool is that! However, though
+eigenvector-eigenvalue problems are arguably the most fundamental class of
+computational problems in linear algebra, solving them numericalls is often extremely
+computationally costly. In this case, especially, it’s quite expensive, as evaluating <span class='cmsy-10'>ℋ</span>Ψ
+a single time requires a complex 3d integral of the wavefunction <span class='cmti-10'>and </span>the
+                                                                  
+
+                                                                  
+potential field over all of space. It should be clear doing any of that by hand is
+completely out of the question. The ultimate goal of the symmetry approach,
+therefore is to <span class='cmbx-10'>make this process as easy as possible </span>- in some cases,
+making the act of finding solutions not only possible to do by hand, but
+intuitive.
+</p><!-- l. 92 --><p class='indent'>   To do so, we return to symmetry. When we say that the <span class='cmbx-10'>evolution </span>of an orbital
+is the same as its symmetric counterparts, we are precisely talking about the
+Hamiltonian: That if one were to move an orbital to a symmetric location, evolve it,
+and then move it back, the the result would be the same as if you just evolved it in
+place. Because the Hamiltonian rigorously describes this evolution, we say that for
+any action <span class='cmmi-10'>g </span>in <span class='cmmi-10'>G</span>, <span class='cmmi-10'>g </span><span class='cmsy-10'>∘ℋ∘ </span><span class='cmmi-10'>g</span><sup><span class='cmsy-7'>−</span><span class='cmr-7'>1</span></sup> = <span class='cmsy-10'>ℋ</span>, or just <span class='cmmi-10'>g </span><span class='cmsy-10'>∘ℋ </span>= <span class='cmsy-10'>ℋ∘ </span><span class='cmmi-10'>g</span>. In other words, for any
+wavefunction Ψ, <span class='cmsy-10'>ℋ</span>(<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>Ψ) = <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>(<span class='cmsy-10'>ℋ</span>Ψ).
+</p><!-- l. 94 --><p class='indent'>   This has a very interesting property for our eigenvectors in particular - since
+<span class='cmsy-10'>ℋ</span>Ψ = <span class='cmmi-10'>E</span>Ψ, <span class='cmsy-10'>ℋ</span>(<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>Ψ) = <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>(<span class='cmsy-10'>ℋ</span>Ψ) = <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>(<span class='cmmi-10'>E</span>Ψ). Since the action of <span class='cmmi-10'>g </span>is linear,
+<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>(<span class='cmmi-10'>E</span>Ψ) = <span class='cmmi-10'>E</span>(<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>Ψ), so <span class='cmsy-10'>ℋ</span>(<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>Ψ) = <span class='cmmi-10'>E</span>(<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>Ψ) - so if Ψ is an eigenvector with
+eigenvalue <span class='cmmi-10'>E</span>, then so is <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>Ψ! This precisely matches our intuition from before, but it
+gives us an extra tool, because the set of eigenvectors with the same eigenvalue
+(which are known as <span class='cmti-10'>degenerate </span>eigenvectors) have a very important property: they
+form a complete subspace. Specifically, if we have eigenvectors <span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub> and <span class='cmmi-10'>v</span><sub><span class='cmr-7'>2</span></sub> of an
+operator <span class='cmmi-10'>A</span>, where <span class='cmmi-10'>Av</span><sub><span class='cmr-7'>1</span></sub> = <span class='cmmi-10'>λv</span><sub><span class='cmr-7'>1</span></sub> and <span class='cmmi-10'>Av</span><sub><span class='cmr-7'>2</span></sub> = <span class='cmmi-10'>λv</span><sub><span class='cmr-7'>2</span></sub>, then for any linear combination
+<span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub> + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>2</span></sub>, <span class='cmmi-10'>A</span>(<span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub> + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>2</span></sub>) = <span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>A</span>(<span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub>) + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>A</span>(<span class='cmmi-10'>v</span><sub><span class='cmr-7'>2</span></sub>) = <span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>λv</span><sub><span class='cmr-7'>1</span></sub> + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>λv</span><sub><span class='cmr-7'>2</span></sub> = <span class='cmmi-10'>λ</span>(<span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>1</span></sub> + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>v</span><sub><span class='cmr-7'>2</span></sub>). In
+other words, any linear combination of eigenvectors of the same eigenvalue is also a
+degenerate eigenvector with that eigenvalue.
+</p><!-- l. 96 --><p class='indent'>   What this means is the span of the orbit of our eigenvectors - which, remember, is
+an invariant subspace under <span class='cmmi-10'>G </span>- is an invariant subspace <span class='cmbx-10'>entirely composed of
+degenerate eigenvectors</span>. This helps us in two ways: 1) we can classify it by
+the representation of <span class='cmmi-10'>G </span>upon it, and 2) we no longer need to worry about
+finding a specific set of symmetric molecular orbitals - all we need to do
+is find a subspace of them, and we can pick any set we like from within
+it.
+</p><!-- l. 98 --><p class='indent'>   Of course, that’s still a daunting task. But now that we know that we’re
+looking for invariant subspaces, there’s a final trick that will tie everything
+together.
+</p>
+   <h3 class='sectionHead' id='representation-spaces-and-irreducible-representations'><span class='titlemark'>6   </span> <a id='x1-60006'></a>Representation Spaces and Irreducible Representations</h3>
+<!-- l. 101 --><p class='noindent'>The fundamental trick that we’re going to use to tie everything together is quite
+simple: If two invariant subspaces induce the same representation of <span class='cmmi-10'>G </span>- where, you’ll
+remember, we define ”same” to mean that the matrices are similar by change-of-bases
+- then together, they form the basis for a larger space in which there are an infinite
+number of invariant subspaces with that representation. Specifically, say we have two
+invariant subspaces <span class='cmmi-10'>U </span>and <span class='cmmi-10'>V </span>have representations <span class='cmmi-10'>A </span>and <span class='cmmi-10'>B </span>respectively, and for
+each <span class='cmmi-10'>A</span><sub><span class='cmmi-7'>g</span></sub> and <span class='cmmi-10'>B</span><sub><span class='cmmi-7'>g</span></sub> corresponding to the group element <span class='cmmi-10'>G</span>, <span class='cmmi-10'>B</span><sub><span class='cmmi-7'>g</span></sub> = <span class='cmmi-10'>MA</span><sub><span class='cmmi-7'>g</span></sub><span class='cmmi-10'>M</span><sup><span class='cmsy-7'>−</span></sup>1 for
+some change-of-basis matrix <span class='cmmi-10'>M</span>. For every vector <span class='cmmi-10'>u </span>in <span class='cmmi-10'>U </span>and <span class='cmmi-10'>v </span>in <span class='cmmi-10'>V </span>, and for
+                                                                  
+
+                                                                  
+every vector <span class='cmmi-10'>w </span>= <span class='cmmi-10'>a</span><sub><span class='cmr-7'>1</span></sub><span class='cmmi-10'>u </span>+ <span class='cmmi-10'>a</span><sub><span class='cmr-7'>2</span></sub><span class='cmmi-10'>v </span>with scalar <span class='cmmi-10'>a</span><sub><span class='cmr-7'>1</span></sub> and <span class='cmmi-10'>a</span><sub><span class='cmr-7'>2</span></sub>, then the span of the
+orbit of <span class='cmmi-10'>w </span>is an invariant subspace which induces a representation of <span class='cmmi-10'>G </span>that
+is also similar to <span class='cmmi-10'>A </span>and <span class='cmmi-10'>B</span>. Proof: Name <span class='cmmi-10'>W </span>as the span of the orbit of <span class='cmmi-10'>w</span>.
+We already know <span class='cmmi-10'>W </span>is invariant under <span class='cmmi-10'>G </span>from before. Take some arbitrary
+vector <span class='cmmi-10'>x </span>in <span class='cmmi-10'>w</span>; I claim we can describe the action of each <span class='cmmi-10'>g </span>on <span class='cmmi-10'>w </span>by way of a
+matrix <span class='cmmi-10'>C </span>which is similar to both <span class='cmmi-10'>A </span>and <span class='cmmi-10'>B</span>. Since we know <span class='cmmi-10'>W </span>is spanned by
+the orbit of <span class='cmmi-10'>w</span>, any <span class='cmmi-10'>z </span>in <span class='cmmi-10'>W </span>can be written as <span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>1</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>w</span>) + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>2</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>w</span>) + <span class='cmmi-10'>...</span>
+for scalar <span class='cmmi-10'>c</span><sub><span class='cmmi-7'>i</span></sub> and over all <span class='cmmi-10'>g</span><sub><span class='cmmi-7'>i</span></sub> in <span class='cmmi-10'>G</span>. Since <span class='cmmi-10'>w </span>= <span class='cmmi-10'>u </span>+ <span class='cmmi-10'>v</span>, this further expands to
+<span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>1</span></sub> <span class='cmsy-10'>∗</span>(<span class='cmmi-10'>u</span>+<span class='cmmi-10'>v</span>))+<span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>2</span></sub> <span class='cmsy-10'>∗</span>(<span class='cmmi-10'>u</span>+<span class='cmmi-10'>v</span>))+<span class='cmmi-10'>... </span>= <span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>1</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>u</span>)+<span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>1</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>v</span>)+<span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>2</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>u</span>)+<span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>2</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>v</span>)+<span class='cmmi-10'>... </span>=
+(<span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>1</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>u</span>) + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>2</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>u</span>) + <span class='cmmi-10'>...</span>) + (<span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>1</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>v</span>) + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>2</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>v</span>) + <span class='cmmi-10'>...</span>). Since both <span class='cmmi-10'>U </span>and
+<span class='cmmi-10'>V </span>are invariant under <span class='cmmi-10'>G</span>, <span class='cmmi-10'>g</span><sub><span class='cmmi-7'>i</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>u </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>U </span>and <span class='cmmi-10'>g</span><sub><span class='cmmi-7'>i</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>v </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>V </span>for all <span class='cmmi-10'>g</span><sub><span class='cmmi-7'>i</span></sub>; thus, <span class='cmti-10'>every</span>
+vector in <span class='cmmi-10'>W </span>can be expressed as a sum of sum of some vector <span class='cmmi-10'>x </span>in <span class='cmmi-10'>U </span>and <span class='cmmi-10'>y</span>
+in <span class='cmmi-10'>V </span>. In other words, <span class='cmmi-10'>z </span>= <span class='cmmi-10'>x </span>+ <span class='cmmi-10'>y</span>. Moreover, since the derivation involved
+only equality, this decomposition is unique. Then, for each group element <span class='cmmi-10'>g</span>:
+<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>z </span>= <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span>(<span class='cmmi-10'>x </span>+ <span class='cmmi-10'>y</span>) = <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>x </span>+ <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>y</span>. Since <span class='cmmi-10'>U </span>and <span class='cmmi-10'>V </span>have representations <span class='cmmi-10'>A </span>and <span class='cmmi-10'>B</span>
+respectively, <span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>z </span>= <span class='cmmi-10'>A </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>x </span>+ <span class='cmmi-10'>B </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>y</span>. To construct our matrix <span class='cmmi-10'>C</span>, we’ll first define the
+change of basis. We will use the <span class='cmbx-10'>projections </span><span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub> and <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>V</span> </sub> from <span class='cmmi-10'>W</span>
+to <span class='cmmi-10'>U </span>and <span class='cmmi-10'>V </span>respectively: since each <span class='cmmi-10'>z </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>W </span>has a unique decomposition
+<span class='cmmi-10'>x </span>+ <span class='cmmi-10'>y </span>into <span class='cmmi-10'>x </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>U </span>and <span class='cmmi-10'>y </span><span class='cmsy-10'>∈ </span><span class='cmmi-10'>V </span>, define <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub>(<span class='cmmi-10'>z</span>) = <span class='cmmi-10'>x </span>and <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>V</span> </sub>(<span class='cmmi-10'>z</span>) = <span class='cmmi-10'>y</span>. Thus
+<span class='cmmi-10'>g </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>z </span>= <span class='cmmi-10'>A</span><sub><span class='cmmi-7'>g</span></sub><span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>z </span>+ <span class='cmmi-10'>B</span><sub><span class='cmmi-7'>g</span></sub><span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>V</span> </sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>z</span>, meaning <span class='cmmi-10'>C </span>= <span class='cmmi-10'>AP</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub> + <span class='cmmi-10'>BP</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>V</span> </sub>. Without
+loss of generality, I’ll now prove that <span class='cmmi-10'>C </span>is similar to <span class='cmmi-10'>A</span>. Goal: show there exists a
+change-of-basis (invertible) matrix <span class='cmmi-10'>M </span>such that <span class='cmmi-10'>C </span>= <span class='cmmi-10'>MAM</span><sup><span class='cmsy-7'>−</span><span class='cmr-7'>1</span></sup>. First, we there
+exists some change-of-basis matrix (call it <span class='cmmi-10'>K</span>) such that <span class='cmmi-10'>B </span>= <span class='cmmi-10'>KAK</span><sup><span class='cmsy-7'>−</span><span class='cmr-7'>1</span></sup>. Thus
+<span class='cmmi-10'>C </span>= <span class='cmmi-10'>AP</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub> + <span class='cmmi-10'>KAK</span><sup><span class='cmsy-7'>−</span><span class='cmr-7'>1</span></sup><span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>V</span> </sub>. Without loss of generality, I will then prove that <span class='cmmi-10'>C</span>
+is similar to <span class='cmmi-10'>A</span>, e.g. <span class='cmmi-10'>C </span>= <span class='cmmi-10'>MAM</span><sup><span class='cmsy-7'>−</span><span class='cmr-7'>1</span></sup> for some invertible matrix <span class='cmmi-10'>M</span>. Claim:
+<span class='cmmi-10'>C </span>= <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub><sup><span class='cmsy-7'>−</span><span class='cmr-7'>1</span></sup><span class='cmmi-10'>AP</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub>. First, again since <span class='cmmi-10'>z </span>= <span class='cmmi-10'>x </span>+ <span class='cmmi-10'>y </span>is unique, we know
+that <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub><sup><span class='cmsy-7'>−</span><span class='cmr-7'>1</span></sup> exists; specifically, we can define it to be <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>U</span><span class='cmsy-7'>→</span><span class='cmmi-7'>W</span></sub>, where for
+<span class='cmmi-10'>x </span>= <span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>1</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>u</span>) + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>2</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>u</span>) + <span class='cmmi-10'>..</span>, <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>U</span><span class='cmsy-7'>→</span><span class='cmmi-7'>W</span></sub>(<span class='cmmi-10'>x</span>) = <span class='cmmi-10'>z </span>= <span class='cmmi-10'>c</span><sub><span class='cmr-7'>1</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>1</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>w</span>) + <span class='cmmi-10'>c</span><sub><span class='cmr-7'>2</span></sub>(<span class='cmmi-10'>g</span><sub><span class='cmr-7'>2</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>w</span>) + <span class='cmmi-10'>...</span>. To prove
+the actual equality, we need to show that for all <span class='cmmi-10'>z </span>in <span class='cmmi-10'>W</span>, <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>U</span><span class='cmsy-7'>→</span><span class='cmmi-7'>W</span></sub><span class='cmmi-10'>AP</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub> <span class='cmsy-10'>∗</span><span class='cmmi-10'>z </span>= <span class='cmmi-10'>C </span><span class='cmsy-10'>∗</span><span class='cmmi-10'>z</span>.
+For <span class='cmmi-10'>z </span>= <span class='cmmi-10'>x </span>+ <span class='cmmi-10'>y</span>, <span class='cmmi-10'>C </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>x </span>= <span class='cmmi-10'>A </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>x </span>+ <span class='cmmi-10'>B </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>y</span>; <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>U</span><span class='cmsy-7'>→</span><span class='cmmi-7'>W</span></sub><span class='cmmi-10'>AP</span><sub><span class='cmmi-7'>W</span><span class='cmsy-7'>→</span><span class='cmmi-7'>U</span></sub> <span class='cmsy-10'>∗ </span><span class='cmmi-10'>z </span>= <span class='cmmi-10'>P</span><sub><span class='cmmi-7'>U</span><span class='cmsy-7'>→</span><span class='cmmi-7'>W</span></sub><span class='cmmi-10'>A </span><span class='cmsy-10'>∗ </span><span class='cmmi-10'>x</span>. <span class='cmbx-10'>TODO:
+FINISH!!!! I’ll need to describe the action of A on x’s </span><span class='cmmi-10'>c</span><sub><span class='cmmi-7'>i</span></sub><span class='cmbx-10'>s, then prove that
+the action of B on y’s </span><span class='cmmi-10'>c</span><sub><span class='cmmi-7'>i</span></sub><span class='cmbx-10'>s is the same.</span>
+</p><!-- l. 103 --><p class='indent'>   While the above proof is... very complicated, the meaning is straightforward: If
+you know the representation of a space, you know that it must be a subspace of the
+span of all invariant subspaces with that same representation. That is - if you are
+looking for a subspace with representation <span class='cmmi-10'>R</span>, then if you can find a complete set of
+linearly independent subspaces all with representation <span class='cmmi-10'>R</span>, then the subspace you’re
+looking for must have a basis made of linear combinations of vectors from each
+representation. <span class='cmti-10'>This </span>is why we care so much about invariant subspaces and their
+representations. If we group all like representations together, then given a
+representation, we can immediately how to find all the subspaces with that
+representation.
+</p><!-- l. 105 --><p class='indent'>   This <span class='cmti-10'>almost </span>gives us a formula for finding our molecular orbitals - except that we
+don’t know their representations. There is, however, one final saving grace: We don’t
+have to, because we know they must be <span class='cmti-10'>irreducible representations</span>.
+</p><!-- l. 107 --><p class='indent'>   One aspect I didn’t mention earlier is the concept of the <span class='cmbx-10'>decomposition</span>, otherwise known
+                                                                  
+
+                                                                  
+as <span class='cmbx-10'>reduction</span><span class='footnote-mark'><a href='main7.html#fn6x0'><sup class='textsuperscript'>6</sup></a></span><a id='x1-6001f6'></a> 
+of a space into invariant subspaces. By decomposing, I mean finding a collection of
+invariant subspace, which, together, reconstitute the whole space; for example, the xy
+plane and the z axis together constitute euclidean 3d space, as any vector in 3d space
+can be described as a linear combination of a vector from the xy plane and a vector
+parallel to the z axis. This joining of subspaces is known as the direct sum; while I
+won’t go into detail here, it may be useful to look up the details if you aren’t
+familiar. What’s most important is that the subspaces be jointly linearly
+independent; that is, no vector in one can be written as a linear combination of
+vectors from any other. This allows us to say that the dimensionality of the
+whole space is the sum of the dimensions of each individual subspace, and we
+can find a basis of the whole space by joining bases from each individual
+space.
+</p><!-- l. 109 --><p class='indent'>   An invariant subspace is therefore <span class='cmbx-10'>decomposable</span>, or <span class='cmbx-10'>reducible</span>, if it itself
+contains linearly-independent invariant subspaces (besides itself and the trivial space
+0) which constitue the space (via the direct sum). A reducible invariant subspace can
+then be broken down into strictly smaller subspaces. On the flipside, an invariant
+subspace <span class='cmbx-10'>indecomposable</span>, or <span class='cmbx-10'>irreducible</span>, if it cannot be broken down in this way.
+All one dimensional invariant spaces are irreducible, as it has no subspaces other
+than itself and the trivial space; however, there exist higher dimensional
+ones. We can similarly name the <span class='cmti-10'>representations </span>of these spaces as reducible
+or irreducible, as indeed, the information of whether a space has invariant
+subspaces is precisely dependent on how the representation upon it transforms its
+vectors.
+</p><!-- l. 111 --><p class='indent'>   Irreducible representations are fantastically useful. For one thing, finite groups
+have <span class='cmbx-10'>finitely many of them </span>(as usual, under similarity by change-of-basis). That
+means, no matter how large your space is, the irreducible representations will only
+ever be one of the finitely many that correspond to the group. Additionally, a very
+famous theorem - Matchke’s theorem, for which there are <span class='cmti-10'>many </span>proofs online, so I
+won’t give one here - states that any invariant subspace can be decomposed into a
+complete set of irreducible representations of a finite group, and, moreover, that the
+<span class='cmti-10'>representations </span>in that decomposition is unique; that is, no matter what subspaces
+you decompose the larger space into, the number of each irreducible representation in
+the final decomposition will be the same. This should hopefully make sense,
+considering the above proof; if one decomposition produces two irreducible subspaces
+with the same representation, then by taking any two linear independent
+combinations of vectors from each subspace, you’ll get another pair of irreducible
+subspaces (so long as the two vectors don’t produce the same subspace) with the
+same representation. Thus, multiple copies of an irreducible representation
+creates a degree of freedom in how you select your subspaces, but as the
+dimension of that space of degenerate representations is fixed, the number of
+linearly independent irreducible subspaces you can extract will always be the
+                                                                  
+
+                                                                  
+same.
+</p><!-- l. 113 --><p class='indent'>   So: How do we know our eigenvectors will always belong to irreducible
+representations? Because they form invariant subspaces! Though I should be more
+specific. I don’t mean that <span class='cmti-10'>every </span>eigenvector of the Hamiltonian will necessarily belong
+to an invariant subspace. While <span class='cmti-10'>many chemistry and physics texts claim that every
+set of eigenvectors with the same eigenvalue is irreducible, </span><span class='cmbxti-10'>it is not, in general,
+true</span><span class='footnote-mark'><a href='main8.html#fn7x0'><sup class='textsuperscript'>7</sup></a></span><a id='x1-6003f7'></a> <span class='footnote-mark'><a href='main9.html#fn8x0'><sup class='textsuperscript'>8</sup></a></span><a id='x1-6005f8'></a> .
+However, it <span class='cmti-10'>is </span>true that every space of degenerate eigenvectors is
+<span class='cmti-10'>invariant</span>, which means that it can always be decomposed into a set of
+irreducible subspaces - which must themselves <span class='cmti-10'>also </span>be spaces of degenerate
+eigenvectors.<span class='footnote-mark'><a href='main10.html#fn9x0'><sup class='textsuperscript'>9</sup></a></span><a id='x1-6007f9'></a> 
+This allows us to effectively sidestep this issue, as our only goal is to find a complete
+basis of eigenvectors; thus, if we can find a basis for each <span class='cmti-10'>irreducible </span>space of
+degenerate eigenvectors, we will have produced a basis for all spaces of eigenvectors
+(and indeed, all space). So, for all intents and purposes, we only need to search the
+irreducible subspaces to find the eigenvectors.
+</p><!-- l. 115 --><p class='indent'>   <span class='cmbx-10'>Thus, our problem reaches its final form: Determine which irreducible
+subspaces house the eigenvectors of the Hamiltonian. </span>The process for this is
+relatively straightforward: Find a complete decomposition of our space into
+irreducible representations, combine the subspaces with the same representation via
+the direct product, and then find a basis of eigenvectors in each smaller space. Since
+we know we can find a complete basis of eigenvectors in our irreducible spaces, and
+since we know that for each irreducible representation, every subspace inducing that
+representation of <span class='cmmi-10'>G </span>can be found as a subspace of the direct product of enough
+spaces with that representation, we know that each collection of irreducible spaces
+will contain all of the degenerate spaces of eigenvectors belonging to that
+representation.
+</p>
+                                                                  
+
+                                                                  
+   <h3 class='sectionHead' id='wrapping-up'><span class='titlemark'>7   </span> <a id='x1-70007'></a>Wrapping Up</h3>
+<!-- l. 119 --><p class='noindent'>Actually applying this to molecules is another matter. Despite what it might seem
+from the density and complexity of this text, however, the process is not all that
+hard to understand visually. It’s really only a select handful of proofs that
+necessitated the existence of this document, and even then, part of me still
+wonders if all of these have some clever visual or intuitive explanation that
+could cut the text’s length in half. Briefly, the molecular approach goes as
+follows:
+</p><!-- l. 122 --><p class='noindent'><span class='cmbx-10'>1</span> Pick a finite basis of orbitals on which to work
+</p><!-- l. 123 --><p class='indent'>  1a) Usually this will be a selection of the atomic orbitals of each atom, though for
+computational approaches these ”atomic orbitals” are often arbitrary localized
+wavefunctions which don’t actually match the atomic s, p, d, etc orbitals at
+all
+</p><!-- l. 124 --><p class='indent'>  1b) There are only two important requirements for the basis:
+</p><!-- l. 125 --><p class='noindent'>1b)1. It must be invariant under the group - this one’s pretty easy to satisfy, as you
+just need to make sure you include the orbit-wavefunctions of every function you
+include. E.g. if you include one hydrogen’s s orbital in ammonia, you need to include
+the other two.
+</p><!-- l. 126 --><p class='indent'>  1c) It must be invariant under the Hamiltonian. This one is basically impossible -
+since we know that in the broader molecule, any space with the right symmetry is
+going to interact with our chosen subspace. By picking appropriately-energied atomic
+orbitals, we can greatly reduce the error from restricting ourselves to a finite basis,
+but there’s not a lot we can say conclusively.
+</p><!-- l. 127 --><p class='noindent'><span class='cmbx-10'>2</span> Find irreducible subspaces in that basis
+</p><!-- l. 128 --><p class='indent'>  2a) This is the process of labeling orbitals by their symmetry and finding SALCs.
+The video will cover this process in <span class='cmti-10'>significantly </span>more detail, as it is often
+unsatisfyingly skipped using character theory.
+</p><!-- l. 129 --><p class='noindent'><span class='cmbx-10'>3</span> Construct the combined irreducible representation spaces by grouping the
+irreducible subspaces by representation
+</p><!-- l. 130 --><p class='noindent'><span class='cmbx-10'>4</span> Represent the Hamiltonian numerically on each of the combined spaces
+</p><!-- l. 131 --><p class='noindent'><span class='cmbx-10'>5</span> Solve each represented Hamiltonian for the eigenvector basis of that irreducible
+representation
+</p><!-- l. 134 --><p class='indent'>   Finally, to connect this to character theory: Character tables store information
+about the various irreducible representations of a finite group. Specifically, each
+element in the table represents the <span class='cmbx-10'>trace </span>of the corresponding matrix used to
+represent <span class='cmmi-10'>G</span>. Since we say two representations are equivalent if they are related by a
+change-of-basis, and the trace doesn’t change under change-of-basis, the trace
+description in a character table is consistent with any representation. Moreover, for
+reasons that currently bewilder me, the rows of a character table - that is, the sets of
+traces corresponding to each element of the group (column) from each irreducible
+representation (row) form an orthogonal vector basis for the space of all
+representations. Thus, given the representation of <span class='cmmi-10'>G </span>on some reducible subspace,
+taking a (modified) dot product between the set of traces of that representation and
+the various rows of the character table can <span class='cmbx-10'>tell you what irreducible
+representations span the space </span>while knowing almost nothing about the
+space.
+                                                                  
+
+                                                                  
+</p><!-- l. 136 --><p class='indent'>   This becomes incredibly useful with the Projection Operator, which allows you to,
+given a target irreducible representation, project any vector into that set of all
+subspaces with that representation. Since character tables gives us a way to know
+the irreducible representations without doing any actual decomposition,
+and the projection operator method lets us project into those irreducible
+representations and thus gives an easy way to find (a) basis, together they
+skip a massive chunk of the work one would do to decompose these spaces
+by hand. In the next video and writeup, I’ll talk about how and why this
+works.
+</p><!-- l. 139 --><p class='indent'>   Well, that was quite a doozy - but of course, as Huckleberry Finn famously said,
+”If I’d have had more time, I would’ve written a shorter letter”. I hope this helps
+<span class='cmti-10'>someone </span>feel better at least; and if not, it’ll serve as a nice personal reference guide.
+Thank you so, so, much for reading, and if you got here without help from the
+Summer of Math Exposition and 3blue1brown, you should go check them out!
+#SoME4 has so many good submissions this year, and most of them aren’t even
+out when I’m writing this! Let’s keep math edutainment youtube alive and
+strong.
+</p>
+    
+</body> 
+</html>
