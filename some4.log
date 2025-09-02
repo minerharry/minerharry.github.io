@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=latex 2025.8.15)  2 SEP 2025 04:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=latex 2025.8.15)  2 SEP 2025 07:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -7,8 +7,8 @@ e##1{\Link##1}\expandafter\HCode\else\expandafter\Link\fi}\def\Link#1.a.b.c.{\l
 et\HCode\documentstyle\def\documentstyle{\let\documentstyle\HCode\expandafter\d
 ef\csname tex4ht\endcsname{#1,html}\def\HCode####1{\documentstyle[tex4ht,}\@ifn
 extchar[{\HCode}{\documentstyle[tex4ht]}}\RequirePackage[#1,html]{tex4ht}}\make
-atother\HCode xhtml,,charset=utf-8,html5.a.b.c.\input \detokenize{main.tex} > n
-ul 2>&1
+atother\HCode xhtml,,charset=utf-8,html5.a.b.c.\input \detokenize{some4.tex} > 
+nul 2>&1
 (C:\Users\miner\AppData\Local\Programs\MiKTeX\tex/generic/tex4ht\tex4ht.sty
 version 2023-10-04-13:17
 Package: tex4ht 
@@ -19,7 +19,7 @@ Package: tex4ht
 --- Note --- for ^ at preamble, use the command line option `early^'
 --------------------------------------
 \tmp:toks=\toks17
-) (main.tex
+) (some4.tex
 (C:\Users\miner\AppData\Local\Programs\MiKTeX\tex/generic/tex4ht\usepackage.4ht
 version 2023-07-25-12:42
 ) (C:\Users\miner\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -300,15 +300,15 @@ File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
 ) (C:\Users\miner\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.lt
 x))
 l.870 --- TeX4ht warning --- nonprimitive \everypar ---
---- needs --- tex4ht main ---
+--- needs --- tex4ht some4 ---
 \tmp:cnt=\count318
-\openout15 = `main.tmp'.
+\openout15 = `some4.tmp'.
 
-(main.tmp)
+(some4.tmp)
 \tmp:dim=\skip54
-(main.xref)
+(some4.xref)
 \:refout=\write3
-\openout3 = `main.xref'.
+\openout3 = `some4.xref'.
 
 (C:\Users\miner\AppData\Local\Programs\MiKTeX\tex/generic/tex4ht\html4.4ht
 version 2023-10-13-14:16
@@ -413,13 +413,13 @@ o use custom a CSS design
 --- Note --- for linear crosslinks of pages, use the command line option `next'
 
 --------------------------------------
-\openout15 = `main.4ct'.
+\openout15 = `some4.4ct'.
 
 \:tocout=\write4
-\openout4 = `main.4tc'.
+\openout4 = `some4.4tc'.
 
-(main.4tc) (C:\Users\miner\AppData\Local\Programs\MiKTeX\tex/generic/tex4ht\htm
-l4.4ht
+(some4.4tc) (C:\Users\miner\AppData\Local\Programs\MiKTeX\tex/generic/tex4ht\ht
+ml4.4ht
 version 2023-10-13-14:16
 ) (C:\Users\miner\AppData\Local\Programs\MiKTeX\tex/generic/tex4ht\unicode.4ht
 version 2023-04-02-08:01
@@ -769,8 +769,8 @@ File: l3backend-dvips.def 2025-06-09 L3 backend support: dvips
 \g__pdfannot_backend_int=\count319
 \g__pdfannot_backend_link_int=\count320
 \g__pdfannot_backend_link_sf_int=\count321
-) (main.aux)
-\openout1 = `main.aux'.
+) (some4.aux)
+\openout1 = `some4.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
@@ -791,7 +791,7 @@ LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
 Package hyperref Info: Link coloring ON on input line 14.
---- file main.css ---
+--- file some4.css ---
 
 
 [1
@@ -817,27 +817,27 @@ LaTeX Warning: No \author given.
 [3]
 
 [4]
---- file main2.html ---
---- file main3.html ---
+--- file some42.html ---
+--- file some43.html ---
 
 
 [5
 
 
 ]
---- file main4.html ---
+--- file some44.html ---
 
 
 [6
 
 ]
---- file main5.html ---
+--- file some45.html ---
 
 
 [7
 
 ]
---- file main6.html ---
+--- file some46.html ---
 
 
 [8
@@ -849,22 +849,26 @@ LaTeX Warning: No \author given.
 [10
 
 ]
-l. 75 Writing main.idv[1] (main0x.png)
+l. 75 Writing some4.idv[1] (some40x.png)
 
 
 [11
 
 ]
-l. 84 Writing main.idv[2] (main1x.png)
-l. 86 Writing main.idv[3] (main2x.png)
+l. 84 Writing some4.idv[2] (some41x.png)
+l. 86 Writing some4.idv[3] (some42x.png)
 
 
 [12
 
 ]
+--- file some47.html ---
 
-[13]
---- file main7.html ---
+
+[13
+
+]
+--- file some48.html ---
 
 
 [14]
@@ -872,32 +876,22 @@ l. 86 Writing main.idv[3] (main2x.png)
 [15
 
 ]
---- file main8.html ---
---- file main9.html ---
---- file main10.html ---
 
+[16]
 
-[16
-
-
-
-]
-
-[17]
-
-[18] (main.aux)
+[17] (some4.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-07-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 14377 strings out of 468135
- 209781 string characters out of 5430766
- 745642 words of memory out of 5000000
- 42635 multiletter control sequences out of 15000+600000
- 637077 words of font info for 79 fonts, out of 8000000 for 9000
+ 14350 strings out of 468135
+ 209627 string characters out of 5430766
+ 740570 words of memory out of 5000000
+ 42610 multiletter control sequences out of 15000+600000
+ 636550 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 80i,6n,96p,3921b,581s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 80i,6n,96p,3685b,581s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.dvi (18 pages, 92096 bytes).
+Output written on some4.dvi (17 pages, 81100 bytes).

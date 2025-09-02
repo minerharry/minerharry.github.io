@@ -1,25 +1,21 @@
-htfcss: cmtt font-family: monospace,monospace;
-htfcss: cmbxti  font-weight: bold; font-style: italic;
-htfcss: cmti  font-style: italic;
 htfcss: cmbx  font-weight: bold;
 htfcss: cmbxsl  font-weight: bold; font-style: oblique;
+htfcss: cmti  font-style: italic;
 htfcss: cmbx  font-weight: bold;
 htfcss: cmbxsl  font-weight: bold; font-style: oblique;
 htfcss: cmtt font-family: monospace,monospace;
 htfcss: cmmi font-style: italic;
 htfcss: cmmib font-style: italic; font-weight: bold;
-File: main.html
-File: main.css
-File: main.tmp
-File: main2.html
-File: main3.html
-File: main4.html
-File: main5.html
-File: main6.html
-File: main7.html
-File: main8.html
-File: main9.html
-File: main10.html
+File: some4.html
+File: some4.css
+File: some4.tmp
+File: some42.html
+File: some43.html
+File: some44.html
+File: some45.html
+File: some46.html
+File: some47.html
+File: some48.html
 Css: p{margin-top:0;margin-bottom:0}
 Css: p.indent{text-indent:0;}
 Css: p + p{margin-top:1em;}
@@ -48,7 +44,7 @@ Css: .chapterHead, .likechapterHead { font-size: 1.7411em; }
 Css: .sectionHead, .likesectionHead { font-size: 1.5157em; }
 Css: .subsectionHead, .likesubsectionHead { font-size: 1.3195em; }
 Css: .subsubsectionHead, .likesubsubsectionHead { font-size: 1.1487em; }
-Css:  @media (prefers-color-scheme: dark) { img[src^="main"]{filter: invert(1); } } 
+Css:  @media (prefers-color-scheme: dark) { img[src^="some4"]{filter: invert(1); } } 
 Css: li p.indent { text-indent: 0em }
 Css: li p:first-child{ margin-top:0em; }
 Css: li p:last-child, li div:last-child { margin-bottom:0.5em; }
@@ -173,9 +169,9 @@ Css: table.multline, table.multline-star {width:100%;}
 Css: td.gather {text-align:center; }
 Css: table.gather {width:100%;}
 Css: div.gather-star {text-align:center;}
---- needs --- main.idv[2] ==> main0x.png ---
---- needs --- main.idv[4] ==> main1x.png ---
---- needs --- main.idv[5] ==> main2x.png ---
+--- needs --- some4.idv[2] ==> some40x.png ---
+--- needs --- some4.idv[4] ==> some41x.png ---
+--- needs --- some4.idv[5] ==> some42x.png ---
 --- characters ---
 Font("cmr","7","7","100")
 Font("cmr","10","10","100")
@@ -198,5 +194,3 @@ Font("cmr","9","9","100")
 Font("cmti","8","8","100")
 Font("cmbx","8","8","100")
 Font("tcrm","1000","10","100")
-Font("cmbxti","10","10","100")
-Font("cmtt","8","8","100")
